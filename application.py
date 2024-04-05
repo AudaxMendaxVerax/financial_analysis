@@ -7,10 +7,10 @@ data_path = 'all_clients_forecasts_2024_all.csv'
 data = pd.read_csv(data_path)
 
 # Streamlit UI setup
-st.title('Client Forecast Report for 2024')
+st.title('Dashboard dei valori previsti del cliente')
 
 # Step 1: Consultant Selection and Display Consultant Information
-consultant_id = st.selectbox('Select Consultant ID', options=[''] + list(data['Consultant Code'].unique()))
+consultant_id = st.selectbox('Seleziona l’ID del consulente', options=[''] + list(data['Consultant Code'].unique()))
 
 if consultant_id:
     consultant_info = data[data['Consultant Code'] == consultant_id].iloc[0]
@@ -21,7 +21,7 @@ if consultant_id:
     consultant_clients_data = data[data['Consultant Code'] == consultant_id]
     
     # Step 2: Client Code Selection (only after consultant is selected)
-    client_code = st.selectbox('Select Client Code', options=[''] + list(consultant_clients_data['Client Code'].unique()))
+    client_code = st.selectbox('Seleziona il Codice Cliente', options=[''] + list(consultant_clients_data['Client Code'].unique()))
     
     if client_code:
         # Further filter data for the selected client
@@ -29,7 +29,7 @@ if consultant_id:
         
         # Display Client Information
         client_info = client_data.iloc[0]
-        st.subheader("Client Information")
+        st.subheader("Informazioni sul cliente")
         st.write(f"Name: {client_info['Name']} {client_info['Surname']}")
         st.write(f"Client ID: {client_info['Client Code']}")
         
@@ -39,7 +39,7 @@ if consultant_id:
             client_info = client_data.iloc[0]
             
             # Financial Overview Graphs
-            st.subheader("Financial Overview")
+            st.subheader("Panoramica finanziaria")
             fig, ax = plt.subplots()
             ax.plot(client_data['Reference Month'], client_data['Total Liquidity'], label='Total Liquidity')
             ax.plot(client_data['Reference Month'], client_data['Total Loans/Engagements'], label='Total Loans/Engagements')
@@ -62,7 +62,7 @@ if consultant_id:
             st.pyplot(fig)
 
             # Expenses Analysis Graphs
-            st.subheader("Expenses Analysis")
+            st.subheader("Analisi delle spese")
             expenses_columns = ['Food Expenses', 'Transport Expenses', 'Entertainment Expenses', 'Healthcare Expenses']
             fig, axs = plt.subplots(len(expenses_columns), 1, figsize=(5, 20))  # Adjusted figsize for better spacing
             for i, col in enumerate(expenses_columns):
@@ -76,9 +76,9 @@ if consultant_id:
             plt.tight_layout(pad=3.0)  # Adjust the padding between and around subplots.
             st.pyplot(fig)
 else:
-    st.write("Please select a consultant to begin.")
+    st.write("Per favore seleziona un consulente per iniziare")
     # Display empty graph or placeholder if no consultant is selected yet
-    st.write("Graphs will appear here once a consultant and client have been selected.")
+    st.write("Charts will appear here once a consultant is selected")
 
 # The rest of the plotting logic remains the same, wrapped in the condition that checks if a client_code is selected
 # This ensures that graphs are only attempted after a client selection is made
