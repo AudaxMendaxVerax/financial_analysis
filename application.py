@@ -61,24 +61,39 @@ if consultant_id:
             plt.xticks(rotation=90)
             st.pyplot(fig)
 
-            # Expenses Analysis Graphs
+            # Expenses Analysis Graphs + Card Expenses
             st.subheader("Analisi delle spese")
+
+            # List of individual expense categories
             expenses_columns = ['Food Expenses', 'Transport Expenses', 'Entertainment Expenses', 'Healthcare Expenses']
-            fig, axs = plt.subplots(len(expenses_columns), 1, figsize=(5, 20))  # Adjusted figsize for better spacing
-            for i, col in enumerate(expenses_columns):
+
+            # Calculate 'Card Expenses' as the sum of all individual expenses
+            client_data['Card Expenses'] = client_data[expenses_columns].sum(axis=1)
+
+            # Include 'Card Expenses' in the plot, adjusting the subplot grid to accommodate the extra plot
+            fig, axs = plt.subplots(len(expenses_columns) + 1, 1, figsize=(5, 22))  # Adjusted figsize for the additional graph
+
+            # Plot 'Card Expenses' first or last depending on where you want it
+            axs[0].plot(client_data['Reference Month'], client_data['Card Expenses'], label='Card Expenses', color='tab:red')
+            axs[0].set_xlabel('Month')
+            axs[0].set_ylabel('Amount')
+            axs[0].legend()
+            axs[0].tick_params(axis='x', rotation=90)
+
+            # Plot each category of expenses in subsequent axes
+            for i, col in enumerate(expenses_columns, start=1):  # Start from 1 to leave space for 'Card Expenses'
                 axs[i].plot(client_data['Reference Month'], client_data[col], label=col)
                 axs[i].set_xlabel('Month')
                 axs[i].set_ylabel('Amount')
                 axs[i].legend()
-                #Rotate x-axis labels
                 axs[i].tick_params(axis='x', rotation=90)
 
-            plt.tight_layout(pad=3.0)  # Adjust the padding between and around subplots.
+            plt.tight_layout(pad=3.0)  # Adjust the padding between and around subplots
             st.pyplot(fig)
 else:
     st.write("Per favore seleziona un consulente per iniziare")
     # Display empty graph or placeholder if no consultant is selected yet
-    st.write("Charts will appear here once a consultant is selected")
+    st.write("I grafici appariranno qui una volta che verrà selezionato un consulente")
 
 # The rest of the plotting logic remains the same, wrapped in the condition that checks if a client_code is selected
 # This ensures that graphs are only attempted after a client selection is made
