@@ -61,27 +61,27 @@ if consultant_id:
             plt.xticks(rotation=90)
             st.pyplot(fig)
 
-            # Expenses Analysis Graphs + Card Expenses
+            # Expenses Analysis Graphs + All Expenses
             st.subheader("Analisi delle spese")
 
             # List of individual expense categories
             expenses_columns = ['Food Expenses', 'Transport Expenses', 'Entertainment Expenses', 'Healthcare Expenses']
 
-            # Calculate 'Card Expenses' as the sum of all individual expenses
-            client_data['Card Expenses'] = client_data[expenses_columns].sum(axis=1)
+            # Calculate 'All Expenses' as the sum of all individual expenses
+            client_data['All Expenses'] = client_data[expenses_columns].sum(axis=1)
 
-            # Include 'Card Expenses' in the plot, adjusting the subplot grid to accommodate the extra plot
+            # Include 'All Expenses' in the plot, adjusting the subplot grid to accommodate the extra plot
             fig, axs = plt.subplots(len(expenses_columns) + 1, 1, figsize=(5, 22))  # Adjusted figsize for the additional graph
 
-            # Plot 'Card Expenses' first or last depending on where you want it
-            axs[0].plot(client_data['Reference Month'], client_data['Card Expenses'], label='Card Expenses', color='tab:red')
+            # Plot 'All Expenses' first or last depending on where you want it
+            axs[0].plot(client_data['Reference Month'], client_data['All Expenses'], label='All Expenses', color='tab:red')
             axs[0].set_xlabel('Month')
             axs[0].set_ylabel('Amount')
             axs[0].legend()
             axs[0].tick_params(axis='x', rotation=90)
 
             # Plot each category of expenses in subsequent axes
-            for i, col in enumerate(expenses_columns, start=1):  # Start from 1 to leave space for 'Card Expenses'
+            for i, col in enumerate(expenses_columns, start=1):  # Start from 1 to leave space for 'All Expenses'
                 axs[i].plot(client_data['Reference Month'], client_data[col], label=col)
                 axs[i].set_xlabel('Month')
                 axs[i].set_ylabel('Amount')
